@@ -1,0 +1,44 @@
+LAB:Google Cloud Fundamentals: Getting Started with GKE
+Objectives:
+In this lab, you learn how to perform the following tasks:
+  -Provision a Kubernetes cluster using Kubernetes Engine.
+  -Deploy and manage Docker containers using kubectl.
+  Procedures:
+ 1.Confirm that needed APIs are enabled
+   -Go to the APIs and Services in the Navigation Menu
+   -Scroll down in the list of enabled APIs, and confirm that both of these APIs are enabled:
+     .Kubernetes Engine API
+	 .Container Registry API
+ 2.Start a Kubernetes Engine cluster
+    For convenience, place the zone that Qwiklabs assigned you to into an environment variable called MY_ZONE. At the Cloud Shell prompt, type this partial command:
+      export MY_ZONE=us-central1-a
+	Start a Kubernetes cluster managed by Kubernetes Engine. Name the cluster webfrontend and configure it to run 2 nodes:
+	  gcloud container clusters create webfrontend --zone $MY_ZONE --num-nodes 2
+	After the cluster is created, check your installed version of Kubernetes using the below command:
+	  kubectl version
+	The gcloud container clusters create command automatically authenticated kubectl for you.
+	Execute the below command to view your running nodes.
+	  kubectl get nodes
+ 3.Run and deploy a container
+     From your Cloud Shell prompt, launch a single instance of the nginx container. (Nginx is a popular web server.)
+	  kubectl create deploy nginx --image=nginx:1.17.10
+	 To view the pod running the nginx container execute the following command:
+	    kubectl get pods
+	 To expose the nginx container to the Internet run this command.
+	    kubectl expose deployment nginx --port 80 --type LoadBalancer
+	 To view the new service execute this command.
+	    kubectl get services
+	 Paste the external IP of your cluster into a new web browser tab.
+	  Results:The default home page of the Nginx browser is displayed.
+	 Scale up the number of pods running on your service by running this command.
+	   kubectl scale deployment nginx --replicas 3
+	  To confirm that Kubernetes has updated the number of pods execute this command.
+	   kubectl get pods
+	 To confirm that your external IP address has not changed run the below command.
+	   kubectl get services
+	 Confirm that the nginx web server still responds by returning to the web browser tab in which your cluster's external IP address was viewed and refresh it.
+
+
+
+	   
+	 
